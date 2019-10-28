@@ -4,9 +4,9 @@ Image that builds wheel for lxml and possibly other modules
 
 Extend the image with: 
 ```
-FROM nkay08/python-wheel-builder-lxml/
+FROM nkay08/python-wheel-builder-lxml as builder
 COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels $(grep -ivE "package_to_ignore|other_package_to_ignore" requirements.txt)
 ```
 
 In the same Dockerfile you can then add your actual image that doesnt need build dependencies, e.g.:
